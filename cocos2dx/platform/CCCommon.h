@@ -27,6 +27,13 @@ THE SOFTWARE.
 
 #include "CCPlatformMacros.h"
 
+// -- custom extension start --
+#include "CCFileUtils.h"
+#include <stdio.h>
+#include <string.h>
+#include <sstream>
+// -- custom extension end --
+
 NS_CC_BEGIN
 
 /**
@@ -37,10 +44,110 @@ NS_CC_BEGIN
 /// The max length of CCLog message.
 static const int kMaxLogLen = 16*1024;
 
+// -- custom extension start --
+typedef enum LogLevel
+{
+	LOG_DEBUG = 1,
+	LOG_INFO = 2,
+	LOG_WARN = 3,
+	LOG_ERROR = 4,
+} ccLogLevel;
+// -- custom extension end --
+
 /**
 @brief Output Debug message.
 */
 void CC_DLL CCLog(const char * pszFormat, ...) CC_FORMAT_PRINTF(1, 2);
+
+// -- custom extension start --
+void CC_DLL CCLog(ccLogLevel logLevel, const char *tag, const char *pszFormat, ...);
+
+// custom logging
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+inline void CC_DLL DDLog(ccLogLevel logLevel, const char *cppName, const char *funcName, int lineNum, const char *pszFormat, ...)
+{
+	static FILE *logFile = NULL; // static global file
+	long int logFileMaxSize = 10 * 1024 * 1024; // 10MB
+	std::string logFilePath = CCFileUtils::sharedFileUtils()->getWritablePath() + "log-cocos2dx.txt";
+    
+	char buf[cocos2d::kMaxLogLen + 1];
+    
+	va_list args;
+	va_start(args, pszFormat);
+	vsnprintf(buf, cocos2d::kMaxLogLen + 1, pszFormat, args);
+	va_end(args);
+    
+	std::string logPriorityString = "";
+	switch (logLevel)
+	{
+		case LOG_DEBUG:
+    		logPriorityString = "[DEBUG]";
+    		break;
+		case LOG_INFO:
+    		logPriorityString = "[INFO]";
+    		break;
+		case LOG_WARN:
+    		logPriorityString = "[WARN]";
+    		break;
+		case LOG_ERROR:
+    		logPriorityString = "[ERROR]";
+    		break;
+		default:
+    		break;
+	}
+    
+	std::ostringstream tag;
+    
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	tag << cppName << ":" << funcName << ":" << lineNum;
+	#else
+	tag << logPriorityString << "[" << cppName << ":" << funcName << ":" << lineNum << "]";
+	#endif
+	CCLog(logLevel, tag.str().c_str(), buf);
+    
+	#ifdef LOG_WRITE_TO_FILE
+	std::ostringstream logInfo;
+	logInfo << "[" << __DATE__ << " " << __TIME__ << "]" << logPriorityString << "[" << cppName << ":" << funcName << ":" << lineNum << "]" << buf << "\r\n";
+    
+	// open and write to file
+	if (logFile == NULL)
+	{
+		logFile = fopen(logFilePath.c_str(), "a+");
+		if (!logFile)
+		{
+    		CCLog(LOG_ERROR, "CCCommon.h:DLog()", "Error creating log file:%s", logFilePath.c_str());
+    		return;
+		}
+	}
+
+	// check if file size exceed max file size, recreate
+	long int logFileSize = ftell(logFile);
+	if (logFileSize > logFileMaxSize)
+	{
+		CCLog(LOG_INFO, "CCCommon.h:DLog()", "Generate new log file:%s", logFilePath.c_str());
+		fclose(logFile);
+
+		logFile = fopen(logFilePath.c_str(), "w+");
+		if (!logFile)
+		{
+			CCLog(LOG_ERROR, "CCCommon.h:DLog()", "Error creating new log file:%s", logFilePath.c_str());
+			return;
+		}
+	}
+    
+	fputs(logInfo.str().c_str(), logFile);
+	fflush(logFile);
+
+	// do not close the file, always open
+	#endif
+}
+#else
+	inline void CC_DLL DDLog(ccLogLevel logLevel, const char *cppName, const char *funcName, int lineNum, const char *pszFormat, ...)
+	{
+		// do nothing
+	}
+#endif
+// -- custom extension end --
 
 /**
  * lua can not deal with ...

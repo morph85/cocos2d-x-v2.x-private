@@ -44,6 +44,39 @@ void CCLog(const char * pszFormat, ...)
     __android_log_print(ANDROID_LOG_DEBUG, "cocos2d-x debug info", "%s", buf);
 }
 
+// -- custom extension start --
+void CCLog(ccLogLevel logLevel, const char *tag, const char *pszFormat, ...)
+{
+    char buf[MAX_LEN];
+
+    va_list args;
+    va_start(args, pszFormat);
+    vsnprintf(buf, MAX_LEN, pszFormat, args);
+    va_end(args);
+
+    android_LogPriority logPriority = ANDROID_LOG_DEBUG;
+    switch (logLevel)
+    {
+    	case LOG_DEBUG:
+    		logPriority = ANDROID_LOG_DEBUG;
+    		break;
+    	case LOG_INFO:
+    		logPriority = ANDROID_LOG_INFO;
+    		break;
+    	case LOG_WARN:
+    		logPriority = ANDROID_LOG_WARN;
+    		break;
+    	case LOG_ERROR:
+    		logPriority = ANDROID_LOG_ERROR;
+    		break;
+    	default:
+    		break;
+    }
+
+    __android_log_print(logPriority, tag, "%s", buf);
+}
+// -- custom extension end --
+
 void CCMessageBox(const char * pszMsg, const char * pszTitle)
 {
     showDialogJNI(pszMsg, pszTitle);

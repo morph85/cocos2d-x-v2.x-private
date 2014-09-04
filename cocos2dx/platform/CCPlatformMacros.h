@@ -207,23 +207,35 @@ public: virtual void set##funName(varType var)   \
     CCLog("%s : %s",__FUNCTION__, CCString::createWithFormat(s, ##__VA_ARGS__)->getCString())
 
 // cocos2d debug
+// -- custom extension start --
+#define LOG_WRITE_TO_FILE 	0
+
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+// -- custom extension end --
+
 #if !defined(COCOS2D_DEBUG) || COCOS2D_DEBUG == 0
 #define CCLOG(...)       do {} while (0)
 #define CCLOGINFO(...)   do {} while (0)
 #define CCLOGERROR(...)  do {} while (0)
 #define CCLOGWARN(...)   do {} while (0)
+// -- custom extension --
+#define DLOG(level, format, ...)	cocos2d::DDLog(level, __FILENAME__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 
 #elif COCOS2D_DEBUG == 1
 #define CCLOG(format, ...)      cocos2d::CCLog(format, ##__VA_ARGS__)
 #define CCLOGERROR(format,...)  cocos2d::CCLog(format, ##__VA_ARGS__)
 #define CCLOGINFO(format,...)   do {} while (0)
 #define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+// -- custom extension --
+#define DLOG(level, format, ...)	cocos2d::DDLog(level, __FILENAME__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 
 #elif COCOS2D_DEBUG > 1
 #define CCLOG(format, ...)      cocos2d::CCLog(format, ##__VA_ARGS__)
 #define CCLOGERROR(format,...)  cocos2d::CCLog(format, ##__VA_ARGS__)
 #define CCLOGINFO(format,...)   cocos2d::CCLog(format, ##__VA_ARGS__)
 #define CCLOGWARN(...) __CCLOGWITHFUNCTION(__VA_ARGS__)
+// -- custom extension --
+#define DLOG(level, format, ...)	cocos2d::DDLog(level, __FILENAME__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #endif // COCOS2D_DEBUG
 
 // Lua engine debug

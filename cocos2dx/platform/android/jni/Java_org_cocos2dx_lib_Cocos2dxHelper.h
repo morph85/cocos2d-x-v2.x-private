@@ -32,6 +32,15 @@ extern const char * getApkPath();
 extern void showDialogJNI(const char * pszMsg, const char * pszTitle);
 extern void showEditTextDialogJNI(const char* pszTitle, const char* pszContent, int nInputMode, int nInputFlag, int nReturnType, int nMaxLength, EditTextCallback pfEditTextCallback, void* ctx);
 extern void terminateProcessJNI();
+
+// -- custom extension start --
+extern float callbackMicLevelJNI();
+extern void callbackActivityOrViewControllerJNI(int eventId);
+extern void callbackPerformActionWithFilePathJNI(int eventId, int actionId, const char *folderPath);
+extern void callbackPerformActionWithFolderPathJNI(int eventId, int actionId, const char *filePath);
+extern std::string callbackJsonEventJNI(std::string callbackJson);
+// -- custom extension end --
+
 extern std::string getCurrentLanguageJNI();
 extern std::string getPackageNameJNI();
 extern std::string getFileDirectoryJNI();

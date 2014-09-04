@@ -71,6 +71,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "CCIMEDispatcher.h"
 #import "OpenGL_Internal.h"
 #import "CCEGLView.h"
+
+// -- custom extension --
+#import "ProtocolCocos2dxCustomContext.h"
+
 //CLASS IMPLEMENTATIONS:
 
 #define IOS_MAX_TOUCHES_COUNT     10
@@ -90,6 +94,8 @@ static EAGLView *view = 0;
 @synthesize multiSampling=multiSampling_;
 @synthesize isKeyboardShown=isKeyboardShown_;
 @synthesize keyboardShowNotification = keyboardShowNotification_;
+// -- custom extension --
+@synthesize controllerDelegate;
 + (Class) layerClass
 {
     return [CAEAGLLayer class];
@@ -345,6 +351,74 @@ static EAGLView *view = 0;
     return pFormat;
 }
 
+// -- custom extension start --
+- (void)callbackPopViewIos
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPopViewIos)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPopViewIos];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackPopViewIos");
+    }
+}
+
+- (void)callbackNativeViewControllerWithContextId:(int)contextId
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackNativeViewControllerWithContextId:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackNativeViewControllerWithContextId:contextId];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackNativeViewController");
+    }
+}
+
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFilePath:(NSString *)filePath
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPerformActionWithEventId:andActionId:andFilePath:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPerformActionWithEventId:eventId andActionId:actionId andFolderPath:filePath];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackEmailWithEventId:%d andActionId:%d andFilePath:%@", eventId, actionId, filePath);
+    }
+}
+
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFolderPath:(NSString *)folderPath
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPerformActionWithEventId:andActionId:andFolderPath:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPerformActionWithEventId:eventId andActionId:actionId andFolderPath:folderPath];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackEmailWithEventId:%d andActionId:%d andFolderPath:%@", eventId, actionId, folderPath);
+    }
+}
+
+- (NSString *)callbackJsonEvent:(NSString *)callbackJson
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackJsonEvent:)])
+    {
+        return [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackJsonEvent:callbackJson];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackJsonEvent:%@", callbackJson);
+        return @"";
+    }
+}
+// -- custom extension end --
+
 #pragma mark EAGLView - Point conversion
 
 - (CGPoint) convertPointFromViewToSurface:(CGPoint)point
@@ -405,7 +479,7 @@ static EAGLView *view = 0;
     
     int i = 0;
     for (UITouch *touch in touches) {
-        ids[i] = (int)touch;
+        ids[i] = (uintptr_t)touch;
         xs[i] = [touch locationInView: [touch view]].x * view.contentScaleFactor;;
         ys[i] = [touch locationInView: [touch view]].y * view.contentScaleFactor;;
         ++i;
@@ -425,7 +499,7 @@ static EAGLView *view = 0;
     
     int i = 0;
     for (UITouch *touch in touches) {
-        ids[i] = (int)touch;
+        ids[i] = (uintptr_t)touch;
         xs[i] = [touch locationInView: [touch view]].x * view.contentScaleFactor;;
         ys[i] = [touch locationInView: [touch view]].y * view.contentScaleFactor;;
         ++i;
@@ -446,7 +520,7 @@ static EAGLView *view = 0;
     
     int i = 0;
     for (UITouch *touch in touches) {
-        ids[i] = (int)touch;
+        ids[i] = (uintptr_t)touch;
         xs[i] = [touch locationInView: [touch view]].x * view.contentScaleFactor;;
         ys[i] = [touch locationInView: [touch view]].y * view.contentScaleFactor;;
         ++i;
@@ -467,7 +541,7 @@ static EAGLView *view = 0;
     
     int i = 0;
     for (UITouch *touch in touches) {
-        ids[i] = (int)touch;
+        ids[i] = (uintptr_t)touch;
         xs[i] = [touch locationInView: [touch view]].x * view.contentScaleFactor;;
         ys[i] = [touch locationInView: [touch view]].y * view.contentScaleFactor;;
         ++i;

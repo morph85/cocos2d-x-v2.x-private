@@ -691,6 +691,61 @@ void CCDirector::popToSceneStackLevel(int level)
 	m_bSendCleanupToScene = false;
 }
 
+// -- custom extension start --
+void CCDirector::popToIosScene(void)
+{
+    unsigned int c = m_pobScenesStack->count();
+    while (c > 1)
+    {
+        CCScene *current = (CCScene*)m_pobScenesStack->lastObject();
+        if( current->isRunning() )
+        {
+            current->onExitTransitionDidStart();
+            current->onExit();
+        }
+        current->cleanup();
+        
+        m_pobScenesStack->removeLastObject();
+        c--;
+    }
+    m_pNextScene = (CCScene*)m_pobScenesStack->lastObject();
+    m_bSendCleanupToScene = false;
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    m_pobOpenGLView->callbackPopViewIos();
+#endif
+}
+
+void CCDirector::callbackNativeActivityOrViewController(int contextId)
+{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    m_pobOpenGLView->callbackNativeActivityOrViewController(contextId);
+#endif
+}
+
+void CCDirector::callbackPerformActionWithFilePath(int eventId, int actionId, const char *filePath)
+{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    m_pobOpenGLView->callbackPerformActionWithFilePath(eventId, actionId, filePath);
+#endif
+}
+
+void CCDirector::callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath)
+{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    m_pobOpenGLView->callbackPerformActionWithFolderPath(eventId, actionId, folderPath);
+#endif
+}
+
+std::string CCDirector::callbackJsonEvent(std::string callbackJson)
+{
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+    return m_pobOpenGLView->callbackJsonEvent(callbackJson);
+#endif
+    return std::string("");
+}
+// -- custom extension end --
+
 void CCDirector::end()
 {
     m_bPurgeDirecotorInNextLoop = true;

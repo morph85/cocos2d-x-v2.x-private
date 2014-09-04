@@ -43,6 +43,20 @@ void CCLog(const char * pszFormat, ...)
     printf("\n");
 }
 
+// -- custom extension start --
+void CCLog(ccLogLevel logLevel, const char *tag, const char *pszFormat, ...)
+{
+	printf("%s", tag);
+    char szBuf[kMaxLogLen+1] = {0};
+    va_list ap;
+    va_start(ap, pszFormat);
+    vsnprintf(szBuf, kMaxLogLen, pszFormat, ap);
+    va_end(ap);
+    printf("%s", szBuf);
+    printf("\n");
+}
+// -- custom extension end --
+
 // ios no MessageBox, use CCLog instead
 void CCMessageBox(const char * pszMsg, const char * pszTitle)
 {

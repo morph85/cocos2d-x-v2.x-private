@@ -193,6 +193,7 @@ xcopy /Y /Q "$(ProjectDir)..\platform\third_party\win32\libraries\*.*" "$(OutDir
     <ClCompile Include="..\layers_scenes_transitions_nodes\CCTransitionProgress.cpp" />
     <ClCompile Include="..\menu_nodes\CCMenu.cpp" />
     <ClCompile Include="..\menu_nodes\CCMenuItem.cpp" />
+    <ClCompile Include="..\menu_nodes\CCRadioMenu.cpp" />
     <ClCompile Include="..\misc_nodes\CCClippingNode.cpp" />
     <ClCompile Include="..\misc_nodes\CCMotionStreak.cpp" />
     <ClCompile Include="..\misc_nodes\CCProgressTimer.cpp" />
@@ -427,6 +428,7 @@ xcopy /Y /Q "$(ProjectDir)..\platform\third_party\win32\libraries\*.*" "$(OutDir
     <ClInclude Include="..\layers_scenes_transitions_nodes\CCTransitionProgress.h" />
     <ClInclude Include="..\menu_nodes\CCMenu.h" />
     <ClInclude Include="..\menu_nodes\CCMenuItem.h" />
+    <ClInclude Include="..\menu_nodes\CCRadioMenu.h" />
     <ClInclude Include="..\misc_nodes\CCClippingNode.h" />
     <ClInclude Include="..\misc_nodes\CCMotionStreak.h" />
     <ClInclude Include="..\misc_nodes\CCProgressTimer.h" />
@@ -538,7 +540,6 @@ xcopy /Y /Q "$(ProjectDir)..\platform\third_party\win32\libraries\*.*" "$(OutDir
     <ClInclude Include="..\CCConfiguration.h" />
     <ClInclude Include="..\CCDirector.h" />
     <ClInclude Include="..\CCScheduler.h" />
-    <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

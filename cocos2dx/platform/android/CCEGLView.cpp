@@ -90,5 +90,32 @@ void CCEGLView::setIMEKeyboardState(bool bOpen)
     setKeyboardStateJNI((int)bOpen);
 }
 
+// -- custom extension start --
+void CCEGLView::callbackPopViewIos()
+{
+    CCLog("Error: stub callbackPopViewIos function for Android");
+}
+
+void CCEGLView::callbackNativeActivityOrViewController(int contextId)
+{
+	callbackActivityOrViewControllerJNI(contextId);
+}
+
+void CCEGLView::callbackPerformActionWithFilePath(int eventId, int actionId, const char *filePath)
+{
+	callbackPerformActionWithFilePathJNI(eventId, actionId, filePath);
+}
+
+void CCEGLView::callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath)
+{
+	callbackPerformActionWithFolderPathJNI(eventId, actionId, folderPath);
+}
+
+std::string CCEGLView::callbackJsonEvent(std::string callbackJson)
+{
+	return callbackJsonEventJNI(callbackJson);
+}
+// -- custom extension end --
+
 NS_CC_END
 

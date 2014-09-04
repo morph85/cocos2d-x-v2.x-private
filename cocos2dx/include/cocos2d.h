@@ -109,6 +109,7 @@ THE SOFTWARE.
 
 // menu_nodes
 #include "menu_nodes/CCMenu.h"
+#include "menu_nodes/CCRadioMenu.h"
 #include "menu_nodes/CCMenuItem.h"
 
 // misc_nodes

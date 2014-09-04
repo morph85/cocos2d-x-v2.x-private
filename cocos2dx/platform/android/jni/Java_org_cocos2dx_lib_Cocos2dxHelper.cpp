@@ -112,6 +112,75 @@ void terminateProcessJNI() {
     }
 }
 
+// -- custom extension start --
+void callbackActivityOrViewControllerJNI(int eventId) {
+	JniMethodInfo t;
+
+	if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "callbackActivityOrViewController", "(I)V")) {
+		t.env->CallStaticVoidMethod(t.classID, t.methodID, eventId);
+		t.env->DeleteLocalRef(t.classID);
+	}
+}
+
+void callbackPerformActionWithFilePathJNI(int eventId, int actionId, const char *filePath) {
+	JniMethodInfo t;
+
+	if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "callbackPerformActionWithFilePath", "(IILjava/lang/String;)V")) {
+		jstring stringArg1;
+		if (!filePath) {
+			stringArg1 = t.env->NewStringUTF("");
+		} else {
+			stringArg1 = t.env->NewStringUTF(filePath);
+		}
+
+	    t.env->CallStaticVoidMethod(t.classID, t.methodID, eventId, actionId, stringArg1);
+
+	    t.env->DeleteLocalRef(stringArg1);
+	    t.env->DeleteLocalRef(t.classID);
+	}
+}
+
+void callbackPerformActionWithFolderPathJNI(int eventId, int actionId, const char *folderPath) {
+	JniMethodInfo t;
+
+	if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "callbackPerformActionWithFolderPath", "(IILjava/lang/String;)V")) {
+		jstring stringArg1;
+		if (!folderPath) {
+			stringArg1 = t.env->NewStringUTF("");
+		} else {
+			stringArg1 = t.env->NewStringUTF(folderPath);
+		}
+
+		t.env->CallStaticVoidMethod(t.classID, t.methodID, eventId, actionId, stringArg1);
+
+		t.env->DeleteLocalRef(stringArg1);
+		t.env->DeleteLocalRef(t.classID);
+	}
+}
+
+std::string callbackJsonEventJNI(std::string callbackJson) {
+	JniMethodInfo t;
+	std::string ret("");
+
+	if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "callbackJsonEvent", "(Ljava/lang/String;)Ljava/lang/String;")) {
+		jstring stringArg1;
+		if (!callbackJson.c_str()) {
+			stringArg1 = t.env->NewStringUTF("");
+		} else {
+			stringArg1 = t.env->NewStringUTF(callbackJson.c_str());
+		}
+
+		jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID, stringArg1);
+		ret = JniHelper::jstring2string(str);
+
+		t.env->DeleteLocalRef(stringArg1);
+		t.env->DeleteLocalRef(str);
+		t.env->DeleteLocalRef(t.classID);
+	}
+	return ret;
+}
+// -- custom extension end --
+
 std::string getPackageNameJNI() {
     JniMethodInfo t;
     std::string ret("");

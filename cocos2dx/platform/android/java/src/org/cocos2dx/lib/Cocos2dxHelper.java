@@ -33,6 +33,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -230,9 +231,58 @@ public class Cocos2dxHelper {
 		}
 	}
 
+    // -- custom extension start --
 	public static void terminateProcess() {
-		android.os.Process.killProcess(android.os.Process.myPid());
+		//android.os.Process.killProcess(android.os.Process.myPid());
+	    Log.i("Cocos2dxHelper", "terminateProcess");
+	    if (Cocos2dxHelper.sContext != null) {
+	        Log.i("Cocos2dxHelper", "terminateProcess:OK");
+	        ((Activity)Cocos2dxHelper.sContext).finish();
+	        Cocos2dxHelper.sContext = null;
+	    }
 	}
+	
+	public static void callbackActivityOrViewController(int eventId) {
+	    if (Cocos2dxHelper.sContext != null && 
+	            ICocos2dxCustomContext.class.isInstance(Cocos2dxHelper.sContext) && 
+	            ICocos2dxCustomContext.class.isAssignableFrom(Cocos2dxHelper.sContext.getClass())) {
+	        ((ICocos2dxCustomContext)Cocos2dxHelper.sContext).callbackActivityOrViewController(eventId);
+        } else {
+            Log.i("Cocos2dxHelper", "Context not responding to function callbackActivityOrViewController:" + eventId);
+        }
+	}
+	
+	public static void callbackPerformActionWithFilePath(int eventId, int actionId, String folderPath) {
+        if (Cocos2dxHelper.sContext != null && 
+                ICocos2dxCustomContext.class.isInstance(Cocos2dxHelper.sContext) && 
+                ICocos2dxCustomContext.class.isAssignableFrom(Cocos2dxHelper.sContext.getClass())) {
+            ((ICocos2dxCustomContext)Cocos2dxHelper.sContext).callbackPerformActionWithFilePath(eventId, actionId, folderPath);
+        } else {
+            Log.i("Cocos2dxHelper", "Context not responding to function callbackPerformActionWithFilePath:" + eventId + ", " + actionId + ", " + folderPath);
+        }
+    }
+	
+	public static void callbackPerformActionWithFolderPath(int eventId, int actionId, String folderPath) {
+	    if (Cocos2dxHelper.sContext != null && 
+                ICocos2dxCustomContext.class.isInstance(Cocos2dxHelper.sContext) && 
+                ICocos2dxCustomContext.class.isAssignableFrom(Cocos2dxHelper.sContext.getClass())) {
+            ((ICocos2dxCustomContext)Cocos2dxHelper.sContext).callbackPerformActionWithFolderPath(eventId, actionId, folderPath);
+        } else {
+            Log.i("Cocos2dxHelper", "Context not responding to function callbackPerformActionWithFolderPath:" + eventId + ", " + actionId + ", " + folderPath);
+        }
+	}
+	
+	public static String callbackJsonEvent(String callbackJson) {
+        if (Cocos2dxHelper.sContext != null && 
+                ICocos2dxCustomContext.class.isInstance(Cocos2dxHelper.sContext) && 
+                ICocos2dxCustomContext.class.isAssignableFrom(Cocos2dxHelper.sContext.getClass())) {
+            return ((ICocos2dxCustomContext)Cocos2dxHelper.sContext).callbackJsonEvent(callbackJson);
+        } else {
+            Log.i("Cocos2dxHelper", "Context not responding to function callbackJsonEvent:" + callbackJson);
+            return "";
+        }
+    }
+    // -- custom extension end --
 
 	private static void showDialog(final String pTitle, final String pMessage) {
 		Cocos2dxHelper.sCocos2dxHelperListener.showDialog(pTitle, pMessage);

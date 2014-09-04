@@ -110,6 +110,17 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @property(nonatomic, readonly) id<UITextInputTokenizer> tokenizer;
 @property(nonatomic, readonly, getter = isKeyboardShown) BOOL isKeyboardShown;
 @property(nonatomic, copy) NSNotification* keyboardShowNotification;
+
+// -- custom extension start --
+@property(nonatomic, assign) id controllerDelegate;
+- (void)callbackPopViewIos;
+- (float)callbackMicLevel;
+- (void)callbackNativeViewControllerWithContextId:(int)contextId;
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFilePath:(NSString *)filePath;
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFolderPath:(NSString *)folderPath;
+- (NSString *)callbackJsonEvent:(NSString *)callbackJson;
+// -- custom extension end --
+
 /** creates an initializes an EAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer */
 + (id) viewWithFrame:(CGRect)frame;
 /** creates an initializes an EAGLView with a frame, a color buffer format, and 0-bit depth buffer */

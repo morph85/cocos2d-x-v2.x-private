@@ -254,6 +254,14 @@ public:
      If level is <= than the current stack level, it won't do anything.
      */
  	void popToSceneStackLevel(int level);
+    
+    // -- custom extension start --
+    void popToIosScene(void); // for iOS only, stub function for Android and other platforms
+    void callbackNativeActivityOrViewController(int contextId);
+    void callbackPerformActionWithFilePath(int eventId, int actionId, const char *folderPath);
+    void callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath);
+    std::string callbackJsonEvent(std::string callbackJson);
+    // -- custom extension end --
 
     /** Replaces the running scene with a new one. The running scene is terminated.
      * ONLY call it if there is a running scene.

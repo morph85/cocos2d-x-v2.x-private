@@ -35,8 +35,35 @@ static CDBufferManager *bufferManager = nil;
 + (SimpleAudioEngine *) sharedEngine
 {
     @synchronized(self)     {
-        if (!sharedEngine)
+        if (!sharedEngine) {
             sharedEngine = [[SimpleAudioEngine alloc] init];
+        }
+        
+        // -- custom extension start --
+        if (sharedEngine != nil && ![sharedEngine isFunctioning])
+        {
+            // attempt restart SimpleAudioEngine
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"+++++++++++++++++++ ATTEMPT TO RESTART AUDIO ENGINE ++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            CDLOGINFO(@"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            
+            // stop all actions
+            [sharedEngine stopBackgroundMusic];
+            [sharedEngine stopAllEffects];
+            
+            // end singleton instance
+            [SimpleAudioEngine end];
+            
+            // restart
+            sharedEngine = [[SimpleAudioEngine alloc] init];
+        }
+        // -- custom extension end --
     }
     return sharedEngine;
 }
@@ -54,6 +81,9 @@ static CDBufferManager *bufferManager = nil;
 {
     if((self=[super init])) {
         am = [CDAudioManager sharedManager];
+        
+        // -- custom extension --
+        [am setResignBehavior:kAMRBStopPlay autoHandle:YES];
         soundEngine = am.soundEngine;
         bufferManager = [[CDBufferManager alloc] initWithEngine:soundEngine];
         mute_ = NO;
@@ -134,6 +164,8 @@ static CDBufferManager *bufferManager = nil;
     if (soundId != kCDNoBuffer) {
         return [soundEngine playSound:soundId sourceGroupId:0 pitch:pitch pan:pan gain:gain loop:loop];
     } else {
+        // -- custom extension --
+        CDLOGINFO(@"playEffect:loop:pitch:pan:gain: return CD_MUTE");
         return CD_MUTE;
     }    
 }
@@ -233,8 +265,21 @@ static CDBufferManager *bufferManager = nil;
         CDLOGINFO(@"Denshion::SimpleAudioEngine sound source created for %@",filePath);
         return result;
     } else {
+        // -- custom extension --
+        CDLOGINFO(@"soundSourceForFile: return nil");
         return nil;
     }    
 }    
+
+// -- custom extension start --
+- (BOOL)isFunctioning
+{
+    if (am.soundEngine == nil)
+    {
+        return NO;
+    }
+    return [am.soundEngine functioning];
+}
+// -- custom extension end --
 
 @end 

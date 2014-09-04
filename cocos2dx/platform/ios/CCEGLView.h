@@ -49,6 +49,13 @@ public:
     
     static CCEGLView* sharedOpenGLView();
 
+    // -- custom extension start --
+    void callbackPopViewIos();
+    void callbackNativeActivityOrViewController(int contextId);
+    void callbackPerformActionWithFilePath(int eventId, int actionId, const char *filePath);
+    void callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath);
+    std::string callbackJsonEvent(std::string callbackJson);
+    // -- custom extension end --
 };
 
 NS_CC_END

@@ -175,9 +175,15 @@ NSString * const kCDN_AudioManagerInitialised = @"kCDN_AudioManagerInitialised";
             //"Stop" the sounds
             [self pause];
             [self rewind];
-        }    
-    }    
-}    
+        }
+        // -- custom extension start --
+        else
+        {
+            [self play];
+        }
+        // -- custom extension end --
+    }
+}
 
 -(NSInteger) numberOfLoops {
     return numberOfLoops;
@@ -870,11 +876,15 @@ static BOOL configured = FALSE;
                 return [bufferId intValue];
             } else {
                 //File didn't load, put buffer id on free list
+                // -- custom extension --
+                CDLOGINFO(@"bufferForFile failed: file didn't load, filePath:%@, %d, %i", filePath, create, [bufferId intValue]);
                 [freedBuffers addObject:bufferId];
                 return kCDNoBuffer;
             }    
         } else {
             //No matching buffer was found
+            // -- custom extension --
+            CDLOGINFO(@"bufferForFile failed: no matching buffer was found, filePath:%@, %d", filePath, create);
             return kCDNoBuffer;
         }    
     } else {
