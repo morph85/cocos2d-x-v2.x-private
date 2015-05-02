@@ -52,7 +52,15 @@ public:
     virtual void setScissorInPoints(float x , float y , float w , float h);
     
     virtual void setIMEKeyboardState(bool bOpen);
-	virtual void setMultiTouchMask(bool mask);
+    virtual void setMultiTouchMask(bool mask);
+    
+    // -- custom extension start --
+    void callbackPopViewIos();
+    void callbackNativeActivityOrViewController(int contextId);
+    void callbackPerformActionWithFilePath(int eventId, int actionId, const char *filePath);
+    void callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath);
+    std::string callbackJsonEvent(std::string callbackJson);
+    // -- custom extension end --
     
 private:
     static CCEGLView* s_sharedView;

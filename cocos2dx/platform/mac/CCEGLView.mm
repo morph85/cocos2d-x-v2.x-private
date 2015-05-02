@@ -114,4 +114,37 @@ void CCEGLView::setMultiTouchMask(bool mask)
 	//glView.multipleTouchEnabled = mask ? YES : NO;
 }
 
+// -- custom extension start --
+void CCEGLView::callbackPopViewIos()
+{
+    [[EAGLView sharedEGLView] callbackPopViewIos];
+}
+
+void CCEGLView::callbackNativeActivityOrViewController(int contextId)
+{
+    [[EAGLView sharedEGLView] callbackNativeViewControllerWithContextId:contextId];
+}
+
+void CCEGLView::callbackPerformActionWithFilePath(int eventId, int actionId, const char *filePath)
+{
+    [[EAGLView sharedEGLView] callbackPerformActionWithEventId:eventId andActionId:actionId andFilePath:[NSString stringWithUTF8String:filePath]];
+}
+
+void CCEGLView::callbackPerformActionWithFolderPath(int eventId, int actionId, const char *folderPath)
+{
+    [[EAGLView sharedEGLView] callbackPerformActionWithEventId:eventId andActionId:actionId andFolderPath:[NSString stringWithUTF8String:folderPath]];
+}
+
+std::string CCEGLView::callbackJsonEvent(std::string callbackJson)
+{
+    NSString *returnJson = [[EAGLView sharedEGLView] callbackJsonEvent:[NSString stringWithUTF8String:callbackJson.c_str()]];
+    std::string returnJsonString = "";
+    if (returnJson != NULL)
+    {
+        returnJsonString = std::string([returnJson UTF8String]);
+    }
+    return returnJsonString;
+}
+// -- custom extension end --
+
 NS_CC_END // end of namespace cocos2d;

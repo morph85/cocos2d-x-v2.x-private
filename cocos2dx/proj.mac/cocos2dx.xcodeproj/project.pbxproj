@@ -257,6 +257,8 @@
 		15842A2615CF6C42006B033F /* CCTouch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15842A2515CF6C42006B033F /* CCTouch.cpp */; };
 		15C647EF165F2B77007D4F18 /* CCClippingNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15C647ED165F2B77007D4F18 /* CCClippingNode.cpp */; };
 		15C647F0165F2B77007D4F18 /* CCClippingNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 15C647EE165F2B77007D4F18 /* CCClippingNode.h */; };
+		1A1FF8F41AF5016400043AAB /* ProtocolCocos2dxCustomContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A1FF8F21AF5016400043AAB /* ProtocolCocos2dxCustomContext.h */; };
+		1A1FF8F51AF5016400043AAB /* ProtocolCocos2dxDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A1FF8F31AF5016400043AAB /* ProtocolCocos2dxDefine.h */; };
 		1A589DA416EC7B2F00C6B691 /* CCUserDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A589DA016EC7B2F00C6B691 /* CCUserDefault.h */; };
 		1A589DA516EC7B2F00C6B691 /* CCUserDefault.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A589DA116EC7B2F00C6B691 /* CCUserDefault.mm */; };
 		1A60BF5C173CD9D90054773B /* CCBool.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A60BF57173CD9D90054773B /* CCBool.h */; };
@@ -564,6 +566,8 @@
 		15842A2515CF6C42006B033F /* CCTouch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCTouch.cpp; sourceTree = "<group>"; };
 		15C647ED165F2B77007D4F18 /* CCClippingNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCClippingNode.cpp; sourceTree = "<group>"; };
 		15C647EE165F2B77007D4F18 /* CCClippingNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCClippingNode.h; sourceTree = "<group>"; };
+		1A1FF8F21AF5016400043AAB /* ProtocolCocos2dxCustomContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolCocos2dxCustomContext.h; sourceTree = "<group>"; };
+		1A1FF8F31AF5016400043AAB /* ProtocolCocos2dxDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolCocos2dxDefine.h; sourceTree = "<group>"; };
 		1A589DA016EC7B2F00C6B691 /* CCUserDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCUserDefault.h; sourceTree = "<group>"; };
 		1A589DA116EC7B2F00C6B691 /* CCUserDefault.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCUserDefault.mm; sourceTree = "<group>"; };
 		1A60BF57173CD9D90054773B /* CCBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBool.h; sourceTree = "<group>"; };
@@ -1255,6 +1259,8 @@
 				41CD6C3215BF7382005E6F29 /* CCWindow.m */,
 				41CD6C3315BF7382005E6F29 /* EAGLView.h */,
 				41CD6C3415BF7382005E6F29 /* EAGLView.mm */,
+				1A1FF8F21AF5016400043AAB /* ProtocolCocos2dxCustomContext.h */,
+				1A1FF8F31AF5016400043AAB /* ProtocolCocos2dxDefine.h */,
 			);
 			path = mac;
 			sourceTree = "<group>";
@@ -1313,9 +1319,11 @@
 				1551A6B4158F2ADE00E66CFE /* CCProtocols.h in Headers */,
 				1551A6B5158F2ADE00E66CFE /* ccTypes.h in Headers */,
 				1551A6B6158F2ADE00E66CFE /* cocos2d.h in Headers */,
+				1A1FF8F41AF5016400043AAB /* ProtocolCocos2dxCustomContext.h in Headers */,
 				1551A6B8158F2ADE00E66CFE /* aabb.h in Headers */,
 				1551A6B9158F2ADE00E66CFE /* mat4stack.h in Headers */,
 				1551A6BA158F2ADE00E66CFE /* matrix.h in Headers */,
+				1A1FF8F51AF5016400043AAB /* ProtocolCocos2dxDefine.h in Headers */,
 				1551A6BB158F2ADE00E66CFE /* kazmath.h in Headers */,
 				1551A6BC158F2ADE00E66CFE /* mat3.h in Headers */,
 				1551A6BD158F2ADE00E66CFE /* mat4.h in Headers */,

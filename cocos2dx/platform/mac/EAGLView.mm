@@ -40,6 +40,9 @@ THE SOFTWARE.
 #import "CCEventDispatcher.h"
 #import "CCEGLView.h"
 
+// -- custom extension --
+#import "ProtocolCocos2dxCustomContext.h"
+
 
 //USING_NS_CC;
 static EAGLView *view;
@@ -47,6 +50,9 @@ static EAGLView *view;
 @implementation EAGLView
 
 @synthesize eventDelegate = eventDelegate_, isFullScreen = isFullScreen_, frameZoomFactor=frameZoomFactor_;
+
+// -- custom extension --
+@synthesize controllerDelegate = controllerDelegate;
 
 +(id) sharedEGLView
 {
@@ -486,4 +492,73 @@ static EAGLView *view;
 {
 	DISPATCH_EVENT(theEvent, _cmd);
 }
+
+// -- custom extension start --
+- (void)callbackPopViewIos
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPopViewIos)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPopViewIos];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackPopViewIos");
+    }
+}
+
+- (void)callbackNativeViewControllerWithContextId:(int)contextId
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackNativeViewControllerWithContextId:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackNativeViewControllerWithContextId:contextId];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackNativeViewController");
+    }
+}
+
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFilePath:(NSString *)filePath
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPerformActionWithEventId:andActionId:andFilePath:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPerformActionWithEventId:eventId andActionId:actionId andFolderPath:filePath];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackEmailWithEventId:%d andActionId:%d andFilePath:%@", eventId, actionId, filePath);
+    }
+}
+
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFolderPath:(NSString *)folderPath
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackPerformActionWithEventId:andActionId:andFolderPath:)])
+    {
+        [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackPerformActionWithEventId:eventId andActionId:actionId andFolderPath:folderPath];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackEmailWithEventId:%d andActionId:%d andFolderPath:%@", eventId, actionId, folderPath);
+    }
+}
+
+- (NSString *)callbackJsonEvent:(NSString *)callbackJson
+{
+    if ([controllerDelegate conformsToProtocol:@protocol(ProtocolCocos2dxCustomContext)] &&
+        [controllerDelegate respondsToSelector:@selector(callbackJsonEvent:)])
+    {
+        return [((id<ProtocolCocos2dxCustomContext>)controllerDelegate) callbackJsonEvent:callbackJson];
+    }
+    else
+    {
+        NSLog(@"Controller delegate not responding to EAGLView::callbackJsonEvent:%@", callbackJson);
+        return @"";
+    }
+}
+// -- custom extension end --
+
 @end

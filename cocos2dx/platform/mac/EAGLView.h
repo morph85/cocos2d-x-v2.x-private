@@ -80,6 +80,7 @@ THE SOFTWARE.
     NSRect          originalWinRect_; // Original size and position
     
     float           frameZoomFactor_;
+    id              controllerDelegate;
 }
 
 @property (nonatomic, readwrite, assign) id<MacEventDelegate> eventDelegate;
@@ -113,6 +114,16 @@ THE SOFTWARE.
 -(void) swapBuffers;
 
 -(void) setFullScreen:(BOOL)fullscreen;
+
+// -- custom extension start --
+@property(nonatomic, assign) id controllerDelegate;
+- (void)callbackPopViewIos;
+- (float)callbackMicLevel;
+- (void)callbackNativeViewControllerWithContextId:(int)contextId;
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFilePath:(NSString *)filePath;
+- (void)callbackPerformActionWithEventId:(int)eventId andActionId:(int)actionId andFolderPath:(NSString *)folderPath;
+- (NSString *)callbackJsonEvent:(NSString *)callbackJson;
+// -- custom extension end --
 
 @end
 #endif // __EAGLVIEW_MAC_H__
